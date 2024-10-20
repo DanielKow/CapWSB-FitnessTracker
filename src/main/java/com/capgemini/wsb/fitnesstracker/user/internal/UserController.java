@@ -26,6 +26,10 @@ class UserController {
                           .toList();
     }
 
+    /**
+     * Get id, name and surname of all users
+     * @return List of SimpleUserDto
+     */
     @GetMapping("simple")
     public List<SimpleUserDto> getAllSimpleUsers() {
         return userService.findAllUsers()
