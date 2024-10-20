@@ -39,6 +39,11 @@ class UserController {
                           .toList();
     }
 
+    /**
+     * Get user by id
+     * @param id of user
+     * @return UserDto
+     */
     @GetMapping("/{id}")
     public UserDto getUser(@PathVariable Long id) {
         return userService.getUser(id)
