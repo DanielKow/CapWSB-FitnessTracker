@@ -1,5 +1,6 @@
 package com.capgemini.wsb.fitnesstracker.user.internal;
 
+import com.capgemini.wsb.fitnesstracker.user.api.SimpleUserDto;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -22,6 +23,14 @@ class UserController {
         return userService.findAllUsers()
                           .stream()
                           .map(userMapper::toDto)
+                          .toList();
+    }
+
+    @GetMapping("simple")
+    public List<SimpleUserDto> getAllSimpleUsers() {
+        return userService.findAllUsers()
+                          .stream()
+                          .map(userMapper::toSimpleDto)
                           .toList();
     }
 
