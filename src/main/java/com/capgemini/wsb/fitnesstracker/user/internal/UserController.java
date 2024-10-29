@@ -60,8 +60,8 @@ class UserController {
         // TODO: saveUser with Service and return User
 
 
-
-        return null;
+        User user = userMapper.toEntity(userDto);
+        return userService.createUser(user);
     }
 
 }
