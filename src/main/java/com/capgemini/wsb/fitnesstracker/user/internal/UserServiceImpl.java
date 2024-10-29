@@ -23,6 +23,11 @@ class UserServiceImpl implements UserService, UserProvider {
         if (user.getId() != null) {
             throw new IllegalArgumentException("User has already DB ID, update is not permitted!");
         }
+
+        if (userRepository.findByEmail(user.getEmail()).isPresent()){
+            throw new IllegalArgumentException("User email is already exist");
+        }
+
         return userRepository.save(user);
     }
 
