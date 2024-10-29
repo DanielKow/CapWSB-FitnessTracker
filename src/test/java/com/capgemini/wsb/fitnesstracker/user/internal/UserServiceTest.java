@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,7 +40,10 @@ public class UserServiceTest {
         // THEN
         InOrder inOrder = Mockito.inOrder(userRepositoryMock);
         inOrder.verify(userRepositoryMock).findByEmail("olaw@poczta.pl");
-        inOrder.verify(userRepositoryMock).save(user);
-
+        inOrder.verify(userRepositoryMock).save(argThat(u ->
+                u.getFirstName().equals("Ola")
+                        && u.getLastName().equals("Wawrzyniak")
+                        && u.getBirthdate().equals(LocalDate.of(2001, 3, 27))
+                        && u.getEmail().equals("olaw@poczta.pl")));
     }
 }
