@@ -44,7 +44,7 @@ class UserController {
      * @param id of user
      * @return UserDto
      */
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public UserDto getUser(@PathVariable Long id) {
         return userService.getUser(id)
                           .map(userMapper::toDto)
@@ -58,6 +58,9 @@ class UserController {
         System.out.println("User with e-mail: " + userDto.email() + "passed to the request");
 
         // TODO: saveUser with Service and return User
+
+
+
         return null;
     }
 
