@@ -56,7 +56,7 @@ class UserController {
     /**
      * Add user
      * @param userDto Data about user to add
-     * @return UserDto
+     * @return Created user
      */
     @PostMapping
     public ResponseEntity<Object> addUser(@RequestBody UserDto userDto) throws InterruptedException {
@@ -69,6 +69,17 @@ class UserController {
         catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
+
+    /**
+     * Delete user by id
+     * @param id of user to delete
+     * @return nothing
+     */
+    @DeleteMapping("{id}")
+    public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
