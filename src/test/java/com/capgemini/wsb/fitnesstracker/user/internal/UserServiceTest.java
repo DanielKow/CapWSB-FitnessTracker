@@ -46,4 +46,22 @@ public class UserServiceTest {
 
 
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void exceptionShouldBeThrown_whenUserExists() {
+        // GIVEN
+        UserRepository userRepositoryMock = mock(UserRepository.class);
+        User existingUser = new User("Ola", "Wawrzyniak", LocalDate.of(2001, 3, 27), "olaw@poczta.pl");
+        when(userRepositoryMock.findByEmail(isA(String.class))).thenReturn(Optional.of(existingUser));
+
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock);
+        User user = new User("Jan", "Kowalski", LocalDate.of(1970, 3, 11), "olaw@poczta.pl");
+
+        // WHEN
+        when(service.createUser(user)).thenThrow(new IllegalArgumentException("User email is already exist"));
+
+        // THEN
+        verify(userRepositoryMock).findByEmail("olaw@poczta.pl");
+        verify(userRepositoryMock, never()).save(isA(User.class));
+    }
 }
