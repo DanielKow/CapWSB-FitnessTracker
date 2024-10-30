@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -100,6 +101,17 @@ class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
 
+    }
+
+    /**
+     * Get users that have birthdate after given date
+     * @param  date to search
+     * @return List of users with matching birthdate
+     */
+    @GetMapping("older/{date}")
+    public ResponseEntity<Object> findUsersOlderThan(@PathVariable LocalDate date) {
+        List<UserDto> users = userService.findOlderThan(date).stream().map(userMapper::toDto).toList();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 }
