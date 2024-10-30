@@ -30,4 +30,6 @@ public interface UserProvider {
      */
     List<User> findAllUsers();
 
+    List<User> findByEmail(String email);
+
 }
