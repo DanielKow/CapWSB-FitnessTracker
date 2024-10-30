@@ -115,23 +115,25 @@ public class UserServiceTest {
     public void userShouldBeUpdate_whenUpdating()
     {
         // GIVEN
+        final long id = 1L;
         UserRepository userRepositoryMock = mock(UserRepository.class);
         User existingUser = new User("Ola", "Wawrzyniak", LocalDate.of(2001,3,27),"olaw@poczta.pl");
-        when(userRepositoryMock.findById(1L)).thenReturn(Optional.of(existingUser));
+        when(userRepositoryMock.findById(id)).thenReturn(Optional.of(existingUser));
         UserServiceImpl service = new UserServiceImpl(userRepositoryMock, new UserMapper());
-        UserDto user = new UserDto(1L, "Aleksandra", "Wawrzyniak", LocalDate.of(2001,3,27),"aw@poczta.pl");
+        UserDto user = new UserDto(id, "Aleksandra", "Wawrzyniak", LocalDate.of(2001,3,27),"aw@poczta.pl");
 
         // WHEN
-        service.updateUser(user);
+        service.updateUser(id, user);
 
         // THEN
         InOrder inOrder = Mockito.inOrder(userRepositoryMock);
-        inOrder.verify(userRepositoryMock).findById(1L);
+        inOrder.verify(userRepositoryMock).findById(id);
         inOrder.verify(userRepositoryMock).save(argThat(u ->
                 u.getFirstName().equals("Aleksandra")
                         && u.getLastName().equals("Wawrzyniak")
                         && u.getBirthdate().equals(LocalDate.of(2001, 3, 27))
                         && u.getEmail().equals("aw@poczta.pl")));
     }
+
 }
 

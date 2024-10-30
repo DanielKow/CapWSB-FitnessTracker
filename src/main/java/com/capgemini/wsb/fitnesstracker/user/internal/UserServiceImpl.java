@@ -42,7 +42,7 @@ class UserServiceImpl implements UserService, UserProvider {
      * @param id of user to delete
      */
     @Override
-    public void deleteUser(long id) {
+    public void deleteUser(final long id) {
         log.info("Deleting User with id {}", id);
         userRepository.deleteById(id);
     }
@@ -53,7 +53,7 @@ class UserServiceImpl implements UserService, UserProvider {
      * @return updated user
      */
     @Override
-    public User updateUser(UserDto user) {
+    public User updateUser(final long id, final UserDto user) {
         return null;
     }
 
@@ -92,7 +92,7 @@ class UserServiceImpl implements UserService, UserProvider {
      * @return List of users with matching emails
      */
     @Override
-    public List<UserDto> findByEmail(String email) {
+    public List<UserDto> findByEmail(final String email) {
         if (email == null || email.isEmpty()) {
             throw new MissingEmailException();
         }
@@ -106,7 +106,7 @@ class UserServiceImpl implements UserService, UserProvider {
      * @return List of users older than given date
      */
     @Override
-    public List<UserDto> findOlderThan(LocalDate date) {
+    public List<UserDto> findOlderThan(final LocalDate date) {
         return userRepository.findByBirthdateAfter(date).stream().map(userMapper::toDto).toList();
     }
 

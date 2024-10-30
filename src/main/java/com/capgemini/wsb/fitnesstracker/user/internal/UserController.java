@@ -60,14 +60,9 @@ class UserController {
      * @return Created user
      */
     @PostMapping
-    public ResponseEntity<Object> addUser(@RequestBody UserDto user) throws InterruptedException {
-        try {
-            UserDto createdUser = userMapper.toDto(userService.createUser(user));
-            return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-        }
-        catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<UserDto> addUser(@RequestBody UserDto user) throws InterruptedException {
+        UserDto createdUser = userMapper.toDto(userService.createUser(user));
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     /**
@@ -78,7 +73,7 @@ class UserController {
     @DeleteMapping("{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -97,9 +92,13 @@ class UserController {
      * @return List of users with birthdate after date
      */
     @GetMapping("older/{date}")
-    public ResponseEntity<Object> findUsersOlderThan(@PathVariable LocalDate date) {
-        List<UserDto> users = userService.findOlderThan(date);
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public List<UserDto> findUsersOlderThan(@PathVariable LocalDate date) {
+        return userService.findOlderThan(date);
     }
 
+
+    @PutMapping("{id}")
+    public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto user) {
+        UserDto updatedUser = userMapper.toDto(userService.updateUser(id, user));
+    }
 }
