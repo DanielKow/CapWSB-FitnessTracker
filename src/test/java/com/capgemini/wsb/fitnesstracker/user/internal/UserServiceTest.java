@@ -91,7 +91,7 @@ public class UserServiceTest {
         verify(userRepositoryMock).findByEmailContainingIgnoreCase("test@");
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void exceptionShouldBeThrown_whenEmailIsNotGivenForFinding() {
         // GIVEN
         UserRepository userRepositoryMock = mock(UserRepository.class);
