@@ -90,9 +90,14 @@ class UserServiceImpl implements UserService, UserProvider {
         return userRepository.findByEmailContainingIgnoreCase(email);
     }
 
+    /**
+     * Get users that are older than given date
+     * @param date to compare
+     * @return List of users older than given date
+     */
     @Override
     public List<User> findOlderThan(LocalDate date) {
-        return List.of();
+        return userRepository.findByBirthdateAfter(date);
     }
 
 }
