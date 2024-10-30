@@ -84,19 +84,11 @@ class UserController {
     /**
      * Get users that have email containing given string ignoring case
      * @param email to search
-     * @return List of users with matching emails, only id, name and surname
+     * @return List of users with matching emails, only id and email
      */
     @GetMapping("email")
-    public ResponseEntity<Object> findUsersByEmil(@RequestParam String email) {
-
-        try {
-            List<UserEmailDto> users = userService.findByEmail(email).stream().map(userMapper::toEmailDto).toList();
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        }
-        catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-
+    public List<UserEmailDto> findUsersByEmil(@RequestParam String email) {
+        return userService.findByEmail(email).stream().map(userMapper::toEmailDto).toList();
     }
 
     /**

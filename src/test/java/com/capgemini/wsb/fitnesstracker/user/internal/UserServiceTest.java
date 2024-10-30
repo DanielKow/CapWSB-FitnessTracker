@@ -1,5 +1,6 @@
 package com.capgemini.wsb.fitnesstracker.user.internal;
 
+import com.capgemini.wsb.fitnesstracker.user.api.MissingEmailException;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import org.junit.Test;
@@ -23,8 +24,8 @@ public class UserServiceTest {
         // GIVEN
         UserRepository userRepositoryMock = mock(UserRepository.class);
         when(userRepositoryMock.findByEmail(isA(String.class))).thenReturn(Optional.empty());
-        UserServiceImpl service = new UserServiceImpl(userRepositoryMock);
-        User user = new User("Ola", "Wawrzyniak", LocalDate.of(2001,3,27),"olaw@poczta.pl");
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock, new UserMapper());
+        UserDto user = new UserDto(null, "Ola", "Wawrzyniak", LocalDate.of(2001,3,27),"olaw@poczta.pl");
 
         // WHEN
         service.createUser(user);
@@ -46,8 +47,8 @@ public class UserServiceTest {
         User existingUser = new User("Ola", "Wawrzyniak", LocalDate.of(2001, 3, 27), "olaw@poczta.pl");
         when(userRepositoryMock.findByEmail(isA(String.class))).thenReturn(Optional.of(existingUser));
 
-        UserServiceImpl service = new UserServiceImpl(userRepositoryMock);
-        User user = new User("Jan", "Kowalski", LocalDate.of(1970, 3, 11), "olaw@poczta.pl");
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock, new UserMapper());
+        UserDto user = new UserDto(null, "Jan", "Kowalski", LocalDate.of(1970, 3, 11), "olaw@poczta.pl");
 
         // WHEN
         when(service.createUser(user)).thenThrow(new IllegalArgumentException("User email is already exist"));
@@ -61,7 +62,7 @@ public class UserServiceTest {
     public void userShouldBeDeleted_whenDeletingUser(){
         // GIVEN
         UserRepository userRepositoryMock = mock(UserRepository.class);
-        UserServiceImpl service = new UserServiceImpl(userRepositoryMock);
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock, new UserMapper());
 
         // WHEN
         service.deleteUser(11L);
@@ -74,7 +75,7 @@ public class UserServiceTest {
     public void userShouldBeFindByEmailContainingIgnoreCase_whenFindingByEmail() {
         // Given
         UserRepository userRepositoryMock = mock(UserRepository.class);
-        UserServiceImpl service = new UserServiceImpl(userRepositoryMock);
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock, new UserMapper());
 
         // When
         service.findByEmail("test@");
@@ -83,14 +84,14 @@ public class UserServiceTest {
         verify(userRepositoryMock).findByEmailContainingIgnoreCase("test@");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = MissingEmailException.class)
     public void exceptionShouldBeThrown_whenEmailIsNotGivenForFinding() {
         // GIVEN
         UserRepository userRepositoryMock = mock(UserRepository.class);
-        UserServiceImpl service = new UserServiceImpl(userRepositoryMock);
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock, new UserMapper());
 
         // WHEN
-        when(service.findByEmail("")).thenThrow(new IllegalArgumentException("Email is not given"));
+        when(service.findByEmail("")).thenThrow(new MissingEmailException());
 
         // THEN
         verify(userRepositoryMock, never()).findByEmailContainingIgnoreCase(isA(String.class));
@@ -100,7 +101,7 @@ public class UserServiceTest {
     public void usersOlderThanDateShouldBeFound_whenFindingAfterDate() {
         // Given
         UserRepository userRepositoryMock = mock(UserRepository.class);
-        UserServiceImpl service = new UserServiceImpl(userRepositoryMock);
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock, new UserMapper());
 
         // When
         service.findOlderThan(LocalDate.of(2000, 1, 1));
@@ -116,7 +117,7 @@ public class UserServiceTest {
         UserRepository userRepositoryMock = mock(UserRepository.class);
         User existingUser = new User("Ola", "Wawrzyniak", LocalDate.of(2001,3,27),"olaw@poczta.pl");
         when(userRepositoryMock.findById(1L)).thenReturn(Optional.of(existingUser));
-        UserServiceImpl service = new UserServiceImpl(userRepositoryMock);
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock, new UserMapper());
         UserDto user = new UserDto(1L, "Aleksandra", "Wawrzyniak", LocalDate.of(2001,3,27),"aw@poczta.pl");
 
         // WHEN
