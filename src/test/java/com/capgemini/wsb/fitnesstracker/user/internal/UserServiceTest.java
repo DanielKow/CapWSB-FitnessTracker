@@ -64,4 +64,17 @@ public class UserServiceTest {
         verify(userRepositoryMock).findByEmail("olaw@poczta.pl");
         verify(userRepositoryMock, never()).save(isA(User.class));
     }
+
+    @Test
+    public void userShouldBeDeleted_whenDeletingUser(){
+        // GIVEN
+        UserRepository userRepositoryMock = mock(UserRepository.class);
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock);
+
+        // WHEN
+        service.deleteUser(11L);
+
+        // THEN
+        verify(userRepositoryMock).deleteById(11L);
+    }
 }
