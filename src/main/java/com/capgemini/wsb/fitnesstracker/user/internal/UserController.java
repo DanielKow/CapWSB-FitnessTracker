@@ -6,6 +6,8 @@ import com.capgemini.wsb.fitnesstracker.user.api.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,16 +54,10 @@ class UserController {
     }
 
     @PostMapping
-    public User addUser(@RequestBody UserDto userDto) throws InterruptedException {
-
-        // Demonstracja how to use @RequestBody
-        System.out.println("User with e-mail: " + userDto.email() + "passed to the request");
-
-        // TODO: saveUser with Service and return User
-
-
+    public ResponseEntity<User> addUser(@RequestBody UserDto userDto) throws InterruptedException {
         User user = userMapper.toEntity(userDto);
-        return userService.createUser(user);
+        User createdUser = userService.createUser(user);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
 }
