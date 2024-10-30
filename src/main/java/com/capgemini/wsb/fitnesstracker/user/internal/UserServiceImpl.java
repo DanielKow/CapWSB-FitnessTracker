@@ -20,17 +20,18 @@ class UserServiceImpl implements UserService, UserProvider {
 
     /**
      * Creates new user in the database
+     *
      * @param user to create
      * @return created user
      */
     @Override
     public User createUser(final UserDto user) {
         log.info("Creating User {}", user);
-        if (user.id() != null) {
+        if (user.id() != null && userRepository.existsById(user.id())) {
             throw new UserAlreadyExistsException(user.id());
         }
 
-        if (userRepository.findByEmail(user.email()).isPresent()){
+        if (userRepository.findByEmail(user.email()).isPresent()) {
             throw new UserAlreadyExistsException(user.email());
         }
 
@@ -40,6 +41,7 @@ class UserServiceImpl implements UserService, UserProvider {
 
     /**
      * Deletes user with given id
+     *
      * @param id of user to delete
      */
     @Override
@@ -50,6 +52,7 @@ class UserServiceImpl implements UserService, UserProvider {
 
     /**
      * Updates user with given data
+     *
      * @param user to update
      * @return updated user
      */
@@ -70,6 +73,7 @@ class UserServiceImpl implements UserService, UserProvider {
 
     /**
      * Get user by id
+     *
      * @param userId of user
      * @return User with given id
      */
@@ -80,6 +84,7 @@ class UserServiceImpl implements UserService, UserProvider {
 
     /**
      * Get user by email
+     *
      * @param email of user
      * @return User with given email
      */
@@ -90,6 +95,7 @@ class UserServiceImpl implements UserService, UserProvider {
 
     /**
      * Get all users
+     *
      * @return List of all users
      */
     @Override
@@ -99,6 +105,7 @@ class UserServiceImpl implements UserService, UserProvider {
 
     /**
      * Get users that have email containing given string ignoring case
+     *
      * @param email to search
      * @return List of users with matching emails
      */
@@ -113,6 +120,7 @@ class UserServiceImpl implements UserService, UserProvider {
 
     /**
      * Get users that are older than given date
+     *
      * @param date to compare
      * @return List of users older than given date
      */

@@ -2,12 +2,9 @@ package com.capgemini.wsb.fitnesstracker.user.internal;
 
 import com.capgemini.wsb.fitnesstracker.exception.api.NotFoundException;
 import com.capgemini.wsb.fitnesstracker.user.api.SimpleUserDto;
-import com.capgemini.wsb.fitnesstracker.user.api.User;
 import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import com.capgemini.wsb.fitnesstracker.user.api.UserEmailDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -97,6 +94,12 @@ class UserController {
     }
 
 
+    /**
+     * Update or create user
+     * @param id of user to update
+     * @param user Data to update or create
+     * @return Updated or created user
+     */
     @PutMapping("{id}")
     public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto user) {
         try {
