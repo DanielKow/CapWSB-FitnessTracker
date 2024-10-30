@@ -82,4 +82,17 @@ class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @GetMapping("email")
+    public ResponseEntity<Object> findUsersByEmil(@RequestParam String email) {
+
+        try {
+            List<SimpleUserDto> users = userService.findByEmail(email).stream().map(userMapper::toSimpleDto).toList();
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
+    }
+
 }
