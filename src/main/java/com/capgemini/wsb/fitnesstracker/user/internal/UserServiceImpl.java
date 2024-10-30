@@ -77,7 +77,7 @@ class UserServiceImpl implements UserService, UserProvider {
 
     /**
      * Get users that have email containing given string ignoring case
-     * @param email of user
+     * @param email to search
      * @return List of users with matching emails
      */
     @Override

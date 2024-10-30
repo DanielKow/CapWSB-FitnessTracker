@@ -63,7 +63,7 @@ class UserController {
         User user = userMapper.toEntity(userDto);
 
         try {
-            User createdUser = userService.createUser(user);
+            UserDto createdUser = userMapper.toDto(userService.createUser(user));
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
         }
         catch (IllegalArgumentException e) {
@@ -82,6 +82,11 @@ class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    /**
+     * Get users that have email containing given string ignoring case
+     * @param email to search
+     * @return List of users with matching emails, only id, name and surname
+     */
     @GetMapping("email")
     public ResponseEntity<Object> findUsersByEmil(@RequestParam String email) {
 
