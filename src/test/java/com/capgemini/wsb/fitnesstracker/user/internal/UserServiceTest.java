@@ -96,5 +96,18 @@ public class UserServiceTest {
         // THEN
         verify(userRepositoryMock, never()).findByEmailContainingIgnoreCase(isA(String.class));
     }
+
+    @Test
+    public void usersOlderThanDateShouldBeFound_whenFindingAfterDate() {
+        // Given
+        UserRepository userRepositoryMock = mock(UserRepository.class);
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock);
+
+        // When
+        service.findOlderThan(LocalDate.of(2000, 1, 1));
+
+        // Then
+        verify(userRepositoryMock).findByBirthdateAfter(LocalDate.of(2000, 1, 1));
+    }
 }
 
