@@ -1,5 +1,6 @@
 package com.capgemini.wsb.fitnesstracker.user.internal;
 
+import com.capgemini.wsb.fitnesstracker.exception.api.NotFoundException;
 import com.capgemini.wsb.fitnesstracker.user.api.MissingEmailException;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import com.capgemini.wsb.fitnesstracker.user.api.UserAlreadyExistsException;
@@ -117,7 +118,7 @@ public class UserServiceTest {
         // GIVEN
         final long id = 1L;
         UserRepository userRepositoryMock = mock(UserRepository.class);
-        User existingUser = new User("Ola", "Wawrzyniak", LocalDate.of(2001,3,27),"olaw@poczta.pl");
+        User existingUser = new User("Ola", "Wawrzyniak", LocalDate.of(2001, 3, 27), "ow@poczta.pl");
         when(userRepositoryMock.findById(id)).thenReturn(Optional.of(existingUser));
         UserServiceImpl service = new UserServiceImpl(userRepositoryMock, new UserMapper());
         UserDto user = new UserDto(id, "Aleksandra", "Wawrzyniak", LocalDate.of(2001,3,27),"aw@poczta.pl");
@@ -135,5 +136,21 @@ public class UserServiceTest {
                         && u.getEmail().equals("aw@poczta.pl")));
     }
 
+    @Test(expected = NotFoundException.class)
+    public void exceptionShouldBeThrown_whenUserDoesNotExistDuringUpdate() {
+        // GIVEN
+        final long id = 1L;
+        UserRepository userRepositoryMock = mock(UserRepository.class);
+        when(userRepositoryMock.existsById(id)).thenReturn(false);
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock, new UserMapper());
+        UserDto user = new UserDto(id, "Aleksandra", "Wawrzyniak", LocalDate.of(2001, 3, 27), "123@test.pl");
+
+        // WHEN
+        when(service.updateUser(id, user)).thenThrow(new NotFoundException("User with id 1 not found"));
+
+        // THEN
+        verify(userRepositoryMock).existsById(id);
+        verify(userRepositoryMock, never()).save(isA(User.class));
+    }
 }
 

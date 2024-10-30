@@ -99,6 +99,10 @@ class UserController {
 
     @PutMapping("{id}")
     public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto user) {
-        UserDto updatedUser = userMapper.toDto(userService.updateUser(id, user));
+        try {
+            return userMapper.toDto(userService.updateUser(id, user));
+        } catch (NotFoundException e) {
+            return userMapper.toDto(userService.createUser(user));
+        }
     }
 }
