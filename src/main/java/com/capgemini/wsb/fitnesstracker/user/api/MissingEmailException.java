@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Email is required")
 public class MissingEmailException extends BusinessException {
     public MissingEmailException() {
-        super("Email is required. My dear boy");
+        super("Email is required");
     }
 }
