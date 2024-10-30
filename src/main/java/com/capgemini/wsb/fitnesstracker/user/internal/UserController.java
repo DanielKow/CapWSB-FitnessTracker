@@ -3,6 +3,8 @@ package com.capgemini.wsb.fitnesstracker.user.internal;
 import com.capgemini.wsb.fitnesstracker.exception.api.NotFoundException;
 import com.capgemini.wsb.fitnesstracker.user.api.SimpleUserDto;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
+import com.capgemini.wsb.fitnesstracker.user.api.UserEmailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
@@ -91,7 +93,7 @@ class UserController {
     public ResponseEntity<Object> findUsersByEmil(@RequestParam String email) {
 
         try {
-            List<SimpleUserDto> users = userService.findByEmail(email).stream().map(userMapper::toSimpleDto).toList();
+            List<UserEmailDto> users = userService.findByEmail(email).stream().map(userMapper::toEmailDto).toList();
             return new ResponseEntity<>(users, HttpStatus.OK);
         }
         catch (IllegalArgumentException e) {
