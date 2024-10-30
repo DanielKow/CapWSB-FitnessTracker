@@ -3,6 +3,7 @@ package com.capgemini.wsb.fitnesstracker.user.internal;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,4 +28,11 @@ interface UserRepository extends JpaRepository<User, Long> {
      * @return List of users having matching email
      */
     List<User> findByEmailContainingIgnoreCase(String email);
+
+    /**
+     * Query searching users by date of birth.
+     * @param date minimum date of birth
+     * @return List of users having birthdate after the given date
+     */
+    List<User> findByBirthdateAfter(LocalDate date);
 }
