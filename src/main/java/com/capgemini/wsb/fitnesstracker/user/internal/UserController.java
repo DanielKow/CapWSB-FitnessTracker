@@ -28,7 +28,6 @@ class UserController {
     public List<UserDto> getAllUsers() {
         return userService.findAllUsers()
                           .stream()
-                          .map(userMapper::toDto)
                           .toList();
     }
 
@@ -52,19 +51,16 @@ class UserController {
     @GetMapping("{id}")
     public UserDto getUser(@PathVariable Long id) {
         return userService.getUser(id)
-                          .map(userMapper::toDto)
                           .orElseThrow(() -> new NotFoundException("User  not found"));
     }
 
     /**
      * Add user
-     * @param userDto Data about user to add
+     * @param user Data about user to add
      * @return Created user
      */
     @PostMapping
-    public ResponseEntity<Object> addUser(@RequestBody UserDto userDto) throws InterruptedException {
-        User user = userMapper.toEntity(userDto);
-
+    public ResponseEntity<Object> addUser(@RequestBody UserDto user) throws InterruptedException {
         try {
             UserDto createdUser = userMapper.toDto(userService.createUser(user));
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
@@ -110,7 +106,7 @@ class UserController {
      */
     @GetMapping("older/{date}")
     public ResponseEntity<Object> findUsersOlderThan(@PathVariable LocalDate date) {
-        List<UserDto> users = userService.findOlderThan(date).stream().map(userMapper::toDto).toList();
+        List<UserDto> users = userService.findOlderThan(date);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 

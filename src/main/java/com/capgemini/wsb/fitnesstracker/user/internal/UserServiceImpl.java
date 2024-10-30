@@ -18,6 +18,7 @@ import java.util.Optional;
 class UserServiceImpl implements UserService, UserProvider {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     /**
      * Creates new user in the database
@@ -25,17 +26,18 @@ class UserServiceImpl implements UserService, UserProvider {
      * @return created user
      */
     @Override
-    public User createUser(final User user) {
+    public User createUser(final UserDto user) {
         log.info("Creating User {}", user);
-        if (user.getId() != null) {
+        if (user.id() != null) {
             throw new IllegalArgumentException("User has already DB ID, update is not permitted!");
         }
 
-        if (userRepository.findByEmail(user.getEmail()).isPresent()){
+        if (userRepository.findByEmail(user.email()).isPresent()){
             throw new IllegalArgumentException("User email is already exist");
         }
 
-        return userRepository.save(user);
+        User userEntity = userMapper.toEntity(user);
+        return userRepository.save(userEntity);
     }
 
     /**
@@ -48,6 +50,11 @@ class UserServiceImpl implements UserService, UserProvider {
         userRepository.deleteById(id);
     }
 
+    /**
+     * Updates user with given data
+     * @param user to update
+     * @return updated user
+     */
     @Override
     public User updateUser(UserDto user) {
         return null;
@@ -59,8 +66,8 @@ class UserServiceImpl implements UserService, UserProvider {
      * @return User with given id
      */
     @Override
-    public Optional<User> getUser(final Long userId) {
-        return userRepository.findById(userId);
+    public Optional<UserDto> getUser(final Long userId) {
+        return userRepository.findById(userId).map(userMapper::toDto);
     }
 
     /**
@@ -69,8 +76,8 @@ class UserServiceImpl implements UserService, UserProvider {
      * @return User with given email
      */
     @Override
-    public Optional<User> getUserByEmail(final String email) {
-        return userRepository.findByEmail(email);
+    public Optional<UserDto> getUserByEmail(final String email) {
+        return userRepository.findByEmail(email).map(userMapper::toDto);
     }
 
     /**
@@ -78,8 +85,8 @@ class UserServiceImpl implements UserService, UserProvider {
      * @return List of all users
      */
     @Override
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> findAllUsers() {
+        return userRepository.findAll().stream().map(userMapper::toDto).toList();
     }
 
     /**
@@ -88,12 +95,12 @@ class UserServiceImpl implements UserService, UserProvider {
      * @return List of users with matching emails
      */
     @Override
-    public List<User> findByEmail(String email) {
+    public List<UserDto> findByEmail(String email) {
         if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("Email is not given");
         }
 
-        return userRepository.findByEmailContainingIgnoreCase(email);
+        return userRepository.findByEmailContainingIgnoreCase(email).stream().map(userMapper::toDto).toList();
     }
 
     /**
@@ -102,8 +109,8 @@ class UserServiceImpl implements UserService, UserProvider {
      * @return List of users older than given date
      */
     @Override
-    public List<User> findOlderThan(LocalDate date) {
-        return userRepository.findByBirthdateAfter(date);
+    public List<UserDto> findOlderThan(LocalDate date) {
+        return userRepository.findByBirthdateAfter(date).stream().map(userMapper::toDto).toList();
     }
 
 }

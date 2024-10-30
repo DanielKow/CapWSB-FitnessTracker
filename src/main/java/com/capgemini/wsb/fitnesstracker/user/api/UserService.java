@@ -6,7 +6,7 @@ package com.capgemini.wsb.fitnesstracker.user.api;
  */
 public interface UserService {
 
-    User createUser(User user);
+    User createUser(UserDto user);
     void deleteUser(long id);
     User updateUser(UserDto user);
 }
