@@ -7,6 +7,6 @@ import com.capgemini.wsb.fitnesstracker.exception.api.BusinessException;
  */
 public class MissingEmailException extends BusinessException {
     public MissingEmailException() {
-        super("Email is required");
+        super("Email is required. My dear boy");
     }
 }
