@@ -53,6 +53,11 @@ class UserController {
                           .orElseThrow(() -> new NotFoundException("User  not found"));
     }
 
+    /**
+     * Add user
+     * @param userDto Data about user to add
+     * @return UserDto
+     */
     @PostMapping
     public ResponseEntity<Object> addUser(@RequestBody UserDto userDto) throws InterruptedException {
         User user = userMapper.toEntity(userDto);
