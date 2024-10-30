@@ -77,4 +77,31 @@ public class UserServiceTest {
         // THEN
         verify(userRepositoryMock).deleteById(11L);
     }
+
+    @Test
+    public void userShouldBeFindByEmailContainingIgnoreCase_whenFindingByEmail() {
+        // Given
+        UserRepository userRepositoryMock = mock(UserRepository.class);
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock);
+
+        // When
+        service.findByEmail("test@");
+
+        // Then
+        verify(userRepositoryMock).findByEmailContainingIgnoreCase("test@");
+    }
+
+    @Test
+    public void exceptionShouldBeThrown_whenEmailIsNotGivenForFinding() {
+        // GIVEN
+        UserRepository userRepositoryMock = mock(UserRepository.class);
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock);
+
+        // WHEN
+        when(service.findByEmail("")).thenThrow(new IllegalArgumentException("Email is not given"));
+
+        // THEN
+        verify(userRepositoryMock, never()).findByEmailContainingIgnoreCase(isA(String.class));
+    }
 }
+
