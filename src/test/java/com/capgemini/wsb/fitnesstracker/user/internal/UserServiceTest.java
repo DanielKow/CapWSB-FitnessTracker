@@ -1,6 +1,7 @@
 package com.capgemini.wsb.fitnesstracker.user.internal;
 
 import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -36,8 +37,6 @@ public class UserServiceTest {
                         && u.getLastName().equals("Wawrzyniak")
                         && u.getBirthdate().equals(LocalDate.of(2001, 3, 27))
                         && u.getEmail().equals("olaw@poczta.pl")));
-
-
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -108,6 +107,29 @@ public class UserServiceTest {
 
         // Then
         verify(userRepositoryMock).findByBirthdateAfter(LocalDate.of(2000, 1, 1));
+    }
+
+    @Test
+    public void userShouldBeUpdate_whenUpdating()
+    {
+        // GIVEN
+        UserRepository userRepositoryMock = mock(UserRepository.class);
+        User existingUser = new User("Ola", "Wawrzyniak", LocalDate.of(2001,3,27),"olaw@poczta.pl");
+        when(userRepositoryMock.findById(1L)).thenReturn(Optional.of(existingUser));
+        UserServiceImpl service = new UserServiceImpl(userRepositoryMock);
+        UserDto user = new UserDto(1L, "Aleksandra", "Wawrzyniak", LocalDate.of(2001,3,27),"aw@poczta.pl");
+
+        // WHEN
+        service.updateUser(user);
+
+        // THEN
+        InOrder inOrder = Mockito.inOrder(userRepositoryMock);
+        inOrder.verify(userRepositoryMock).findById(1L);
+        inOrder.verify(userRepositoryMock).save(argThat(u ->
+                u.getFirstName().equals("Aleksandra")
+                        && u.getLastName().equals("Wawrzyniak")
+                        && u.getBirthdate().equals(LocalDate.of(2001, 3, 27))
+                        && u.getEmail().equals("aw@poczta.pl")));
     }
 }
 

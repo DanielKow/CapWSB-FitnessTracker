@@ -1,6 +1,7 @@
 package com.capgemini.wsb.fitnesstracker.user.internal;
 
 import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import com.capgemini.wsb.fitnesstracker.user.api.UserProvider;
 import com.capgemini.wsb.fitnesstracker.user.api.UserService;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,11 @@ class UserServiceImpl implements UserService, UserProvider {
     public void deleteUser(long id) {
         log.info("Deleting User with id {}", id);
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User updateUser(UserDto user) {
+        return null;
     }
 
     /**
