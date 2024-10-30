@@ -26,11 +26,11 @@ class UserServiceImpl implements UserService, UserProvider {
     public User createUser(final UserDto user) {
         log.info("Creating User {}", user);
         if (user.id() != null) {
-            throw new IllegalArgumentException("User has already DB ID, update is not permitted!");
+            throw new UserAlreadyExistsException(user.id());
         }
 
         if (userRepository.findByEmail(user.email()).isPresent()){
-            throw new IllegalArgumentException("User email is already exist");
+            throw new UserAlreadyExistsException(user.email());
         }
 
         User userEntity = userMapper.toEntity(user);

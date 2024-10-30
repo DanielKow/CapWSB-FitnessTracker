@@ -2,6 +2,7 @@ package com.capgemini.wsb.fitnesstracker.user.internal;
 
 import com.capgemini.wsb.fitnesstracker.user.api.MissingEmailException;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserAlreadyExistsException;
 import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -40,7 +41,7 @@ public class UserServiceTest {
                         && u.getEmail().equals("olaw@poczta.pl")));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = UserAlreadyExistsException.class)
     public void exceptionShouldBeThrown_whenUserExists() {
         // GIVEN
         UserRepository userRepositoryMock = mock(UserRepository.class);
@@ -51,7 +52,7 @@ public class UserServiceTest {
         UserDto user = new UserDto(null, "Jan", "Kowalski", LocalDate.of(1970, 3, 11), "olaw@poczta.pl");
 
         // WHEN
-        when(service.createUser(user)).thenThrow(new IllegalArgumentException("User email is already exist"));
+        when(service.createUser(user)).thenThrow(new UserAlreadyExistsException("olaw@poczta.pl"));
 
         // THEN
         verify(userRepositoryMock).findByEmail("olaw@poczta.pl");
