@@ -75,9 +75,18 @@ class UserServiceImpl implements UserService, UserProvider {
         return userRepository.findAll();
     }
 
+    /**
+     * Get users that have email containing given string ignoring case
+     * @param email of user
+     * @return List of users with matching emails
+     */
     @Override
     public List<User> findByEmail(String email) {
-        return List.of();
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("Email is not given");
+        }
+
+        return userRepository.findByEmailContainingIgnoreCase(email);
     }
 
 }

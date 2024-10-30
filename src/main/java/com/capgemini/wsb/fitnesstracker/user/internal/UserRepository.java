@@ -22,5 +22,10 @@ interface UserRepository extends JpaRepository<User, Long> {
                         .findFirst();
     }
 
+    /**
+     * Query searching users by email address. It matches by containing the given email.
+     * @param email of the user to search
+     * @return List of users having matching email
+     */
     List<User> findByEmailContainingIgnoreCase(String email);
 }
