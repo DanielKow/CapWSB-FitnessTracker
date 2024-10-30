@@ -106,7 +106,7 @@ class UserController {
     /**
      * Get users that have birthdate after given date
      * @param  date to search
-     * @return List of users with matching birthdate
+     * @return List of users with birthdate after date
      */
     @GetMapping("older/{date}")
     public ResponseEntity<Object> findUsersOlderThan(@PathVariable LocalDate date) {
