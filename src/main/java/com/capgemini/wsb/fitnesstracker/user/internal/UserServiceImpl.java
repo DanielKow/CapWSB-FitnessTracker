@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,6 +88,11 @@ class UserServiceImpl implements UserService, UserProvider {
         }
 
         return userRepository.findByEmailContainingIgnoreCase(email);
+    }
+
+    @Override
+    public List<User> findOlderThan(LocalDate date) {
+        return List.of();
     }
 
 }
