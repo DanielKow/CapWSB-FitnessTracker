@@ -1,10 +1,9 @@
 package com.capgemini.wsb.fitnesstracker.training.api;
 
 import com.capgemini.wsb.fitnesstracker.training.internal.ActivityType;
-import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
 
@@ -12,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class TrainingDto {
     private Long id;
-    private User user;
+    private UserDto user;
     private Date startTime;
     private Date endTime;
     private ActivityType activityType;

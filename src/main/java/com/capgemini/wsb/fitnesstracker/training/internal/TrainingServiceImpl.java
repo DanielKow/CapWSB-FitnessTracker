@@ -5,12 +5,15 @@ import com.capgemini.wsb.fitnesstracker.training.api.TrainingProvider;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
+@Service
 public class TrainingServiceImpl implements TrainingProvider {
 
     private final TrainingRepository trainingRepository;
