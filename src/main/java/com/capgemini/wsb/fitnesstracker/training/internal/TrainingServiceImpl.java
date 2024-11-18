@@ -45,11 +45,21 @@ public class TrainingServiceImpl implements TrainingProvider {
         return trainingRepository.findByUserId(userId).stream().map(trainingMapper::toDto).toList();
     }
 
+    /**
+     * Get all trainings that ended after a given date
+     * @param after date
+     * @return List of TrainingDto
+     */
     @Override
     public List<TrainingDto> getTrainingEndedAfter(Date after) {
         return trainingRepository.findByEndTimeAfter(after).stream().map(trainingMapper::toDto).toList();
     }
 
+    /**
+     * Get all trainings for a given activity type
+     * @param activityType type of activity
+     * @return List of TrainingDto
+     */
     @Override
     public List<TrainingDto> getTrainingsByActivityType(ActivityType activityType) {
         return trainingRepository.findByActivityType(activityType).stream().map(trainingMapper::toDto).toList();

@@ -38,11 +38,21 @@ class TrainingController {
         return trainingService.getTrainingsByUserId(userId);
     }
 
+    /**
+     * Get all trainings that ended after a given date
+     * @param afterTime date after which the trainings ended
+     * @return List of TrainingDto
+     */
     @GetMapping("finished/{afterTime}")
     public List<TrainingDto> getTrainingEndedAfter(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date afterTime){
         return trainingService.getTrainingEndedAfter(afterTime);
     }
 
+    /**
+     * Get all trainings for a given activity type
+     * @param activityType type of activity
+     * @return List of TrainingDto
+     */
     @GetMapping("activityType")
     public List<TrainingDto> getTrainingsByActivityType(@Param("activityType") ActivityType activityType) {
         return trainingService.getTrainingsByActivityType(activityType);
