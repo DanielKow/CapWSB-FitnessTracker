@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -34,5 +35,10 @@ class TrainingController {
     @GetMapping("{userId}")
     public List<TrainingDto> getTrainingsByUserId(@PathVariable Long userId) {
         return trainingService.getTrainingsByUserId(userId);
+    }
+
+    @GetMapping("finished/{afterTime}")
+    public List<TrainingDto> getTrainingEndedAfter(@PathVariable Date after){
+        return trainingService.getTrainingEndedAfter(after);
     }
 }

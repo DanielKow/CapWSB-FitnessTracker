@@ -2,6 +2,7 @@ package com.capgemini.wsb.fitnesstracker.training.api;
 
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,4 +25,6 @@ public interface TrainingProvider {
      * @return List of trainings for the given user
      */
     List<TrainingDto> getTrainingsByUserId(Long userId);
+
+    List<TrainingDto> getTrainingEndedAfter(Date after);
 }
