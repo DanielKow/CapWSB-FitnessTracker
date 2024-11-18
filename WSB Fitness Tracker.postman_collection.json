@@ -197,6 +197,105 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Trainings",
+			"item": [
+				{
+					"name": "Get all trainings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/trainings",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"trainings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get trainings for user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/trainings/:userId",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"trainings",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get trainings ended after time",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/trainings/finished/:afterTime",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"trainings",
+								"finished",
+								":afterTime"
+							],
+							"variable": [
+								{
+									"key": "afterTime",
+									"value": "2023-05-11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get trainings by activity type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/trainings/activityType?activityType=CYCLING",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"trainings",
+								"activityType"
+							],
+							"query": [
+								{
+									"key": "activityType",
+									"value": "CYCLING"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
