@@ -50,4 +50,9 @@ public class TrainingServiceImpl implements TrainingProvider {
         return trainingRepository.findByEndTimeAfter(after).stream().map(trainingMapper::toDto).toList();
     }
 
+    @Override
+    public List<TrainingDto> getTrainingsByActivityType(ActivityType activityType) {
+        return trainingRepository.findByActivityType(activityType).stream().map(trainingMapper::toDto).toList();
+    }
+
 }

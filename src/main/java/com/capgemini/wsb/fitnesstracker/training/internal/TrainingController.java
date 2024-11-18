@@ -42,4 +42,9 @@ class TrainingController {
     public List<TrainingDto> getTrainingEndedAfter(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date afterTime){
         return trainingService.getTrainingEndedAfter(afterTime);
     }
+
+    @GetMapping("activityType")
+    public List<TrainingDto> getTrainingsByActivityType(@Param("activityType") ActivityType activityType) {
+        return trainingService.getTrainingsByActivityType(activityType);
+    }
 }
