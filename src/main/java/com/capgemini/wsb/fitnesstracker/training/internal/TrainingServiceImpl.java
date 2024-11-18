@@ -34,4 +34,14 @@ public class TrainingServiceImpl implements TrainingProvider {
         return trainingRepository.findAll().stream().map(trainingMapper::toDto).toList();
     }
 
+    /**
+     * Retrieves all trainings for a given user.
+     * @param userId id of the user to search trainings for
+     * @return List of trainings for the given user
+     */
+    @Override
+    public List<TrainingDto> getTrainingsByUserId(Long userId) {
+        return trainingRepository.findByUserId(userId).stream().map(trainingMapper::toDto).toList();
+    }
+
 }

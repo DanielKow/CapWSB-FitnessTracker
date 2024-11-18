@@ -17,4 +17,11 @@ public interface TrainingProvider {
     Optional<TrainingDto> getTraining(Long trainingId);
 
     List<TrainingDto> getAllTrainings();
+
+    /**
+     * Retrieves all trainings for a given user.
+     * @param userId id of the user to search trainings for
+     * @return List of trainings for the given user
+     */
+    List<TrainingDto> getTrainingsByUserId(Long userId);
 }
