@@ -3,6 +3,7 @@ package com.capgemini.wsb.fitnesstracker.training.internal;
 import com.capgemini.wsb.fitnesstracker.training.api.TrainingDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ class TrainingController {
     }
 
     @GetMapping("finished/{afterTime}")
-    public List<TrainingDto> getTrainingEndedAfter(@PathVariable Date after){
-        return trainingService.getTrainingEndedAfter(after);
+    public List<TrainingDto> getTrainingEndedAfter(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date afterTime){
+        return trainingService.getTrainingEndedAfter(afterTime);
     }
 }
