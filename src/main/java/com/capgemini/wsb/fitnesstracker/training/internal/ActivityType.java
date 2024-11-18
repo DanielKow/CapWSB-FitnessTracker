@@ -1,6 +1,9 @@
 package com.capgemini.wsb.fitnesstracker.training.internal;
 
-// TODO : JavaDoc
+/***
+ * Enum representing the type of activity.
+ * Each activity type has a display name.
+ */
 public enum ActivityType {
 
     RUNNING("Running"),
