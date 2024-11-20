@@ -29,4 +29,5 @@ interface TrainingRepository extends JpaRepository<Training, Long> {
      * @return List of trainings for the given activity type
      */
     List<Training> findByActivityType(ActivityType activityType);
+
 }

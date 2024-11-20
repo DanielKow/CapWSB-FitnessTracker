@@ -1,8 +1,10 @@
 package com.capgemini.wsb.fitnesstracker.training.internal;
 
-import com.capgemini.wsb.fitnesstracker.training.api.TrainingDto;
-import com.capgemini.wsb.fitnesstracker.training.api.TrainingProvider;
+import com.capgemini.wsb.fitnesstracker.training.api.*;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
+import com.capgemini.wsb.fitnesstracker.user.api.UserNotFoundException;
+import com.capgemini.wsb.fitnesstracker.user.api.UserProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,10 +17,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class TrainingServiceImpl implements TrainingProvider {
+public class TrainingServiceImpl implements TrainingProvider, TrainingService {
 
     private final TrainingRepository trainingRepository;
     private final TrainingMapper trainingMapper;
+    private final UserProvider userProvider;
 
     @Override
     public Optional<TrainingDto> getTraining(final Long trainingId) {
@@ -65,4 +68,28 @@ public class TrainingServiceImpl implements TrainingProvider {
         return trainingRepository.findByActivityType(activityType).stream().map(trainingMapper::toDto).toList();
     }
 
+
+    @Override
+    public TrainingDto createTraining(AddTrainingRequest trainingToAdd) {
+        Optional<UserDto> user = userProvider.getUser(trainingToAdd.getUserId());
+        if(user.isEmpty()){
+            throw new UserNotFoundException(trainingToAdd.getUserId());
+        }
+        UserDto userDto = user.get();
+        Training trainingEntity = new Training(new User(
+                userDto.id(),
+                userDto.firstName(),
+                userDto.lastName(),
+                userDto.birthdate(),
+                userDto.email()),
+                trainingToAdd.getStartTime(),
+                trainingToAdd.getEndTime(),
+                trainingToAdd.getActivityType(),
+                trainingToAdd.getDistance(),
+                trainingToAdd.getAverageSpeed());
+
+        Training createdTraining = trainingRepository.save(trainingEntity);
+
+        return trainingMapper.toDto(createdTraining);
+    }
 }

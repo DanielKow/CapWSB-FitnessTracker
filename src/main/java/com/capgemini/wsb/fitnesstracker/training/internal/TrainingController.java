@@ -1,13 +1,16 @@
 package com.capgemini.wsb.fitnesstracker.training.internal;
 
+import com.capgemini.wsb.fitnesstracker.training.api.AddTrainingRequest;
+import com.capgemini.wsb.fitnesstracker.training.api.AddTrainingResponse;
 import com.capgemini.wsb.fitnesstracker.training.api.TrainingDto;
+import com.capgemini.wsb.fitnesstracker.user.api.UserEmailDto;
+import com.capgemini.wsb.fitnesstracker.user.api.UserNameEmailDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -18,6 +21,7 @@ import java.util.List;
 class TrainingController {
 
     private final TrainingServiceImpl trainingService;
+
 
     /**
      * Get all trainings
@@ -57,4 +61,14 @@ class TrainingController {
     public List<TrainingDto> getTrainingsByActivityType(@Param("activityType") ActivityType activityType) {
         return trainingService.getTrainingsByActivityType(activityType);
     }
+
+    @PostMapping()
+    public ResponseEntity<AddTrainingResponse> addTraining(@RequestBody AddTrainingRequest request){
+        TrainingDto training = trainingService.createTraining(request);
+        UserNameEmailDto userNameEmail = new UserNameEmailDto(training.getUser().id(), training.getUser().firstName(), training.getUser().lastName(), training.getUser().email());
+        AddTrainingResponse response = new AddTrainingResponse(userNameEmail, training.getDistance(), training.getAverageSpeed());
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
 }

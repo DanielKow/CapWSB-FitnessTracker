@@ -50,4 +50,7 @@ public class TrainingMapper {
                 trainingDto.getDistance(),
                 trainingDto.getAverageSpeed());
     }
+
+
+
 }
