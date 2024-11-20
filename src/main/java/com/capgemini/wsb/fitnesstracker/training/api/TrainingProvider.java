@@ -29,5 +29,10 @@ public interface TrainingProvider {
 
     List<TrainingDto> getTrainingEndedAfter(Date after);
 
+    /**
+     * Get all trainings for a given activity type
+     * @param activityType activity type to search trainings for
+     * @return List of trainings for the given activity type
+     */
     List<TrainingDto> getTrainingsByActivityType(ActivityType activityType);
 }

@@ -68,7 +68,11 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
         return trainingRepository.findByActivityType(activityType).stream().map(trainingMapper::toDto).toList();
     }
 
-
+    /**
+     * Add a new training
+     * @param trainingToAdd request to create a new training
+     * @return created training
+     */
     @Override
     public TrainingDto createTraining(AddTrainingRequest trainingToAdd) {
         Optional<UserDto> user = userProvider.getUser(trainingToAdd.getUserId());

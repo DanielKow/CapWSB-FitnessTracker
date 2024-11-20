@@ -62,6 +62,11 @@ class TrainingController {
         return trainingService.getTrainingsByActivityType(activityType);
     }
 
+    /**
+     * Add a new training
+     * @param request request to create a new training
+     * @return response with created training
+     */
     @PostMapping()
     public ResponseEntity<AddTrainingResponse> addTraining(@RequestBody AddTrainingRequest request){
         TrainingDto training = trainingService.createTraining(request);

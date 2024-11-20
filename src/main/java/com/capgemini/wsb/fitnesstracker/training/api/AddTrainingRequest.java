@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.util.Date;
 
+/**
+ * Request to add a training
+ */
 @Getter
 @AllArgsConstructor
 public class AddTrainingRequest {

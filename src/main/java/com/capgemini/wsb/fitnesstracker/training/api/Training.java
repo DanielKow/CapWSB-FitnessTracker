@@ -6,6 +6,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+
+/**
+ * Training entity
+ */
 @Entity
 @Table(name = "trainings")
 @Getter
