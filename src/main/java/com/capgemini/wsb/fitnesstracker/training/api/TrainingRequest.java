@@ -5,11 +5,11 @@ import lombok.Getter;
 import java.util.Date;
 
 /**
- * Request to add a training
+ * Request to add or update a training
  */
 @Getter
 @AllArgsConstructor
-public class AddTrainingRequest {
+public class TrainingRequest {
     private Long userId;
     private Date startTime;
     private Date endTime;

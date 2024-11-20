@@ -7,7 +7,6 @@ import com.capgemini.wsb.fitnesstracker.user.api.UserNotFoundException;
 import com.capgemini.wsb.fitnesstracker.user.api.UserProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -40,6 +39,7 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
 
     /**
      * Retrieves all trainings for a given user.
+     *
      * @param userId id of the user to search trainings for
      * @return List of trainings for the given user
      */
@@ -50,6 +50,7 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
 
     /**
      * Get all trainings that ended after a given date
+     *
      * @param after date
      * @return List of TrainingDto
      */
@@ -60,6 +61,7 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
 
     /**
      * Get all trainings for a given activity type
+     *
      * @param activityType type of activity
      * @return List of TrainingDto
      */
@@ -70,13 +72,14 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
 
     /**
      * Add a new training
+     *
      * @param trainingToAdd request to create a new training
      * @return created training
      */
     @Override
-    public TrainingDto createTraining(AddTrainingRequest trainingToAdd) {
+    public TrainingDto createTraining(TrainingRequest trainingToAdd) {
         Optional<UserDto> user = userProvider.getUser(trainingToAdd.getUserId());
-        if(user.isEmpty()){
+        if (user.isEmpty()) {
             throw new UserNotFoundException(trainingToAdd.getUserId());
         }
         UserDto userDto = user.get();
@@ -95,5 +98,32 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
         Training createdTraining = trainingRepository.save(trainingEntity);
 
         return trainingMapper.toDto(createdTraining);
+    }
+
+    /**
+     * Updates an existing training
+     *
+     * @param trainingToUpdate training to be updated
+     * @return updated training
+     */
+    @Override
+    public TrainingDto updateTraining(Long id, TrainingRequest trainingToUpdate) {
+        Optional<Training> existingTraining = trainingRepository.findById(id);
+
+        if (existingTraining.isEmpty()) {
+            throw new TrainingNotFoundException(id);
+        }
+
+        Training trainingEntity = existingTraining.get();
+
+        trainingEntity.setStartTime(trainingToUpdate.getStartTime());
+        trainingEntity.setEndTime(trainingToUpdate.getEndTime());
+        trainingEntity.setActivityType(trainingToUpdate.getActivityType());
+        trainingEntity.setDistance(trainingToUpdate.getDistance());
+        trainingEntity.setAverageSpeed(trainingToUpdate.getAverageSpeed());
+
+        Training updatedTraining = trainingRepository.save(trainingEntity);
+
+        return trainingMapper.toDto(updatedTraining);
     }
 }

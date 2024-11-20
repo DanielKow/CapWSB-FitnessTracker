@@ -13,6 +13,7 @@ import java.util.Date;
 @Entity
 @Table(name = "trainings")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString

@@ -1,9 +1,9 @@
 package com.capgemini.wsb.fitnesstracker.training.internal;
 
-import com.capgemini.wsb.fitnesstracker.training.api.AddTrainingRequest;
+import com.capgemini.wsb.fitnesstracker.training.api.TrainingRequest;
 import com.capgemini.wsb.fitnesstracker.training.api.AddTrainingResponse;
 import com.capgemini.wsb.fitnesstracker.training.api.TrainingDto;
-import com.capgemini.wsb.fitnesstracker.user.api.UserEmailDto;
+import com.capgemini.wsb.fitnesstracker.training.api.UpdateTrainingResponse;
 import com.capgemini.wsb.fitnesstracker.user.api.UserNameEmailDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
@@ -68,7 +68,7 @@ class TrainingController {
      * @return response with created training
      */
     @PostMapping()
-    public ResponseEntity<AddTrainingResponse> addTraining(@RequestBody AddTrainingRequest request){
+    public ResponseEntity<AddTrainingResponse> addTraining(@RequestBody TrainingRequest request){
         TrainingDto training = trainingService.createTraining(request);
         UserNameEmailDto userNameEmail = new UserNameEmailDto(training.getUser().id(), training.getUser().firstName(), training.getUser().lastName(), training.getUser().email());
         AddTrainingResponse response = new AddTrainingResponse(userNameEmail, training.getDistance(), training.getAverageSpeed());
@@ -76,4 +76,17 @@ class TrainingController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    /**
+     * Update an existing training
+     * @param trainingId id of the training to be updated
+     * @param request data about training to be updated
+     * @return response with updated training
+     */
+    @PutMapping("{trainingId}")
+    public ResponseEntity<UpdateTrainingResponse> updateTraining(@PathVariable Long trainingId, @RequestBody TrainingRequest request){
+        TrainingDto training = trainingService.updateTraining(trainingId, request);
+        UserNameEmailDto userNameEmail = new UserNameEmailDto(training.getUser().id(), training.getUser().firstName(), training.getUser().lastName(), training.getUser().email());
+        UpdateTrainingResponse response = new UpdateTrainingResponse(userNameEmail, training.getActivityType(), training.getDistance(), training.getAverageSpeed());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
