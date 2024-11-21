@@ -114,8 +114,20 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
             throw new TrainingNotFoundException(id);
         }
 
+        Optional<UserDto> user = userProvider.getUser(trainingToUpdate.getUserId());
+        if (user.isEmpty()) {
+            throw new UserNotFoundException(trainingToUpdate.getUserId());
+        }
+        UserDto userDto = user.get();
+
         Training trainingEntity = existingTraining.get();
 
+        trainingEntity.setUser(new User(
+                userDto.id(),
+                userDto.firstName(),
+                userDto.lastName(),
+                userDto.birthdate(),
+                userDto.email()));
         trainingEntity.setStartTime(trainingToUpdate.getStartTime());
         trainingEntity.setEndTime(trainingToUpdate.getEndTime());
         trainingEntity.setActivityType(trainingToUpdate.getActivityType());

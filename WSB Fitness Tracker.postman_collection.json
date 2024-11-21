@@ -237,7 +237,7 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "9"
+									"value": "2"
 								}
 							]
 						}
@@ -290,6 +290,61 @@
 									"key": "activityType",
 									"value": "CYCLING"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new training",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"2\",\n    \"startTime\": \"2024-04-01T11:00:00\",\n    \"endTime\": \"2024-04-01T11:00:00\",\n    \"activityType\": \"RUNNING\",\n    \"distance\": 10.52,\n    \"averageSpeed\": 8.2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/trainings",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"trainings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update training",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"2\",\n    \"startTime\": \"2024-01-19T07:00:00.000+00:00\",\n    \"endTime\": \"2024-01-19T08:30:00.000+00:00\",\n    \"activityType\": \"CYCLING\",\n    \"distance\": 10.5,\n    \"averageSpeed\": 8.2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/trainings/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"trainings",
+								"1"
 							]
 						}
 					},
