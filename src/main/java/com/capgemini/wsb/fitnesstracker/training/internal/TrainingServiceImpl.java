@@ -1,5 +1,6 @@
 package com.capgemini.wsb.fitnesstracker.training.internal;
 
+import com.capgemini.wsb.fitnesstracker.dates.DatesUtils;
 import com.capgemini.wsb.fitnesstracker.training.api.*;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.YearMonth;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +70,20 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
     @Override
     public List<TrainingDto> getTrainingsByActivityType(ActivityType activityType) {
         return trainingRepository.findByActivityType(activityType).stream().map(trainingMapper::toDto).toList();
+    }
+
+    /**
+     * Get all trainings for a given user from the last month
+     *
+     * @param userId id of the user
+     * @return List of trainings for the given user from the last month
+     */
+    @Override
+    public List<TrainingDto> getUserTrainingsFromLastMonth(Long userId) {
+        YearMonth lastMonth = YearMonth.now().minusMonths(1);
+        Date startOfLastMonth = DatesUtils.toDate(lastMonth.atDay(1));
+        Date endOfLastMonth = DatesUtils.toDate(lastMonth.atEndOfMonth());
+        return trainingRepository.findByUserIdAndEndTimeBetween(userId, startOfLastMonth, endOfLastMonth).stream().map(trainingMapper::toDto).toList();
     }
 
     /**

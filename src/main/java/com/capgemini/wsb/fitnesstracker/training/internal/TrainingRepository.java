@@ -30,4 +30,12 @@ interface TrainingRepository extends JpaRepository<Training, Long> {
      */
     List<Training> findByActivityType(ActivityType activityType);
 
+    /**
+     * Query searching trainings by user ID and end time.
+     * @param userId id of the user to search trainings for
+     * @param endTimeAfter start date
+     * @param endTimeBefore end date
+     * @return List of trainings for the given user and end time
+     */
+    List<Training> findByUserIdAndEndTimeBetween(Long userId, Date endTimeAfter, Date endTimeBefore);
 }

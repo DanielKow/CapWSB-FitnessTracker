@@ -35,4 +35,11 @@ public interface TrainingProvider {
      * @return List of trainings for the given activity type
      */
     List<TrainingDto> getTrainingsByActivityType(ActivityType activityType);
+
+    /**
+     * Get all trainings for a given user from the last month
+     * @param userId id of the user
+     * @return List of trainings for the given user from the last month
+     */
+    List<TrainingDto> getUserTrainingsFromLastMonth(Long userId);
 }
