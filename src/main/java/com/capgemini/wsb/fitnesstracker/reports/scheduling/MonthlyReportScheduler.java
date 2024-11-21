@@ -1,5 +1,6 @@
-package com.capgemini.wsb.fitnesstracker.reports.internal;
+package com.capgemini.wsb.fitnesstracker.reports.scheduling;
 
+import com.capgemini.wsb.fitnesstracker.reports.api.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

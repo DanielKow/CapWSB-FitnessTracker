@@ -1,4 +1,4 @@
-package com.capgemini.wsb.fitnesstracker.reports.internal;
+package com.capgemini.wsb.fitnesstracker.reports.api;
 
 public interface ReportService {
     void generateAndSendMonthlyReport();
