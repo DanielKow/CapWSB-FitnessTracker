@@ -82,7 +82,7 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
     public List<TrainingDto> getUserTrainingsFromLastMonth(Long userId) {
         YearMonth lastMonth = YearMonth.now().minusMonths(1);
         Date startOfLastMonth = DatesUtils.toDate(lastMonth.atDay(1));
-        Date endOfLastMonth = DatesUtils.toDate(lastMonth.atEndOfMonth());
+        Date endOfLastMonth = DatesUtils.toDate(lastMonth.atEndOfMonth().atTime(23, 59, 59));
         return trainingRepository.findByUserIdAndEndTimeBetween(userId, startOfLastMonth, endOfLastMonth).stream().map(trainingMapper::toDto).toList();
     }
 

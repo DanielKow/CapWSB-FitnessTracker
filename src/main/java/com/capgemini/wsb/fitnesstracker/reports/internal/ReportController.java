@@ -1,8 +1,10 @@
 package com.capgemini.wsb.fitnesstracker.reports.internal;
 
+import com.capgemini.wsb.fitnesstracker.reports.api.Report;
 import com.capgemini.wsb.fitnesstracker.reports.api.ReportService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,8 +15,8 @@ public class ReportController {
 
     private final ReportService reportService;
 
-    @PostMapping("/generateAndSendMonthlyReport")
-    public void generateAndSendMonthlyReport() {
-        reportService.generateAndSendMonthlyReport();
+    @GetMapping("/lastMonth")
+    public Report getReportFromLastMonthForUser(@Param("userId") Long userId) {
+        return reportService.generateReportFromLastMonthForUser(userId);
     }
 }

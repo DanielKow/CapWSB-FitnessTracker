@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -40,11 +41,12 @@ class ReportServiceImpl implements ReportService {
         int numberOfTrainings = userTrainingsFromLastMonth.size();
         double totalDistance = userTrainingsFromLastMonth.stream().mapToDouble(TrainingDto::getDistance).sum();
         double totalTime = userTrainingsFromLastMonth.stream().mapToDouble(training -> training.getEndTime().getTime() - training.getStartTime().getTime()).sum();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM.yy");
+        double totalHours = totalTime / 1000 / 60 / 60;
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM.yy");
 
-        String title = "Raport z miesiąca " + dateFormat.format(LocalDate.now());
+        String title = "Raport z miesiąca " + LocalDate.now().minusMonths(1).format(dateFormat);
 
-        return new Report(user.id(), title, numberOfTrainings, totalDistance, totalTime);
+        return new Report(user.id(), title, numberOfTrainings, totalDistance, totalHours);
     }
 
     @Override
