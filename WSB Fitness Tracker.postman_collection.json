@@ -60,7 +60,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\": \"Jan\",\n    \"lastName\": \"Kowalski\",\n    \"birthdate\": \"1999-02-01\",\n    \"email\": \"dd@kowalski.com\"\n}",
+							"raw": "{\n    \"firstName\": \"Daniel\",\n    \"lastName\": \"Kowalski\",\n    \"birthdate\": \"1999-02-01\",\n    \"email\": \"danielk.biznes@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -263,7 +263,7 @@
 							"variable": [
 								{
 									"key": "afterTime",
-									"value": "2023-05-11"
+									"value": "2024-10-01"
 								}
 							]
 						}
@@ -302,7 +302,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userId\": \"2\",\n    \"startTime\": \"2024-04-01T11:00:00\",\n    \"endTime\": \"2024-04-01T11:00:00\",\n    \"activityType\": \"RUNNING\",\n    \"distance\": 10.52,\n    \"averageSpeed\": 8.2\n}",
+							"raw": "{\n    \"userId\": \"11\",\n    \"startTime\": \"2024-10-30T16:30:00\",\n    \"endTime\": \"2024-10-30T18:30:00\",\n    \"activityType\": \"WALKING\",\n    \"distance\": 2,\n    \"averageSpeed\": 2.4\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -345,6 +345,69 @@
 								"v1",
 								"trainings",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Get report for user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/reports/lastMonth?userId=11",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"reports",
+								"lastMonth"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "11"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Emails",
+			"item": [
+				{
+					"name": "Send email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"toAddress\": \"danielk.biznes@gmail.com\",\n    \"subject\": \"test\",\n    \"content\": \"To są chojne widły gnojne. To oznacza kaszeba\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/emails/send",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"emails",
+								"send"
 							]
 						}
 					},
