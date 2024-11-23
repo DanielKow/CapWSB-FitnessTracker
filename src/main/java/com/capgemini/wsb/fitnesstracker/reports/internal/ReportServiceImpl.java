@@ -1,5 +1,7 @@
 package com.capgemini.wsb.fitnesstracker.reports.internal;
 
+import com.capgemini.wsb.fitnesstracker.mail.api.EmailDto;
+import com.capgemini.wsb.fitnesstracker.mail.api.EmailSender;
 import com.capgemini.wsb.fitnesstracker.reports.api.Report;
 import com.capgemini.wsb.fitnesstracker.reports.api.ReportService;
 import com.capgemini.wsb.fitnesstracker.training.api.TrainingDto;
@@ -23,6 +25,7 @@ import java.util.List;
 class ReportServiceImpl implements ReportService {
     private final UserProvider userProvider;
     private final TrainingProvider trainingProvider;
+    private final EmailSender emailSender;
 
     @Override
     public List<Report> generateReportsFromLastMonth() {
@@ -46,16 +49,38 @@ class ReportServiceImpl implements ReportService {
 
         String title = "Raport z miesiąca " + LocalDate.now().minusMonths(1).format(dateFormat);
 
-        return new Report(user.id(), title, numberOfTrainings, totalDistance, totalHours);
+        return new Report("%s %s".formatted(user.firstName(), user.lastName()), title, numberOfTrainings, totalDistance, totalHours);
     }
 
+    /**
+     * Sends a report.
+     * @param report to be sent
+     */
     @Override
     public void sendReport(Report report) {
+        var content = """
+                Witaj %s!
+                Oto Twój raport z ostatniego miesiąca.
+                Liczba treningów: %d
+                Przebyty dystans: %.2f km
+                Czas ćwiczeń: %.2f godzin
+                """
+                .formatted(
+                        report.userName(),
+                        report.numberOfTrainings(),
+                        report.totalDistance(),
+                        report.totalDistance());
 
+        EmailDto reportEmail = new EmailDto(report.userName(), "Raport z treningów", content);
+        emailSender.send(reportEmail);
     }
 
+    /**
+     * Sends reports.
+     * @param reports list of reports to be sent
+     */
     @Override
     public void sendReports(List<Report> reports) {
-
+        reports.forEach(this::sendReport);
     }
 }
