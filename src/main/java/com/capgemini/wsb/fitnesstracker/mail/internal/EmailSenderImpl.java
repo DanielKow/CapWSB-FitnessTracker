@@ -12,11 +12,12 @@ import org.springframework.stereotype.Service;
 public class EmailSenderImpl implements EmailSender {
 
     private final JavaMailSender emailSender;
+    private final MailProperties mailProperties;
 
     @Override
     public void send(EmailDto email) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply@baeldung.com");
+        message.setFrom(mailProperties.getFrom());
         message.setTo(email.toAddress());
         message.setSubject(email.subject());
         message.setText(email.content());
