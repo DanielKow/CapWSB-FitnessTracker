@@ -49,7 +49,7 @@ class ReportServiceImpl implements ReportService {
 
         String title = "Raport z miesiąca " + LocalDate.now().minusMonths(1).format(dateFormat);
 
-        return new Report("%s %s".formatted(user.firstName(), user.lastName()), title, numberOfTrainings, totalDistance, totalHours);
+        return new Report(user.id(), title, numberOfTrainings, totalDistance, totalHours);
     }
 
     /**
@@ -58,20 +58,23 @@ class ReportServiceImpl implements ReportService {
      */
     @Override
     public void sendReport(Report report) {
+        UserDto user = userProvider.getUser(report.userId()).orElseThrow(() -> new UserNotFoundException(report.userId()));
+
         var content = """
-                Witaj %s!
-                Oto Twój raport z ostatniego miesiąca.
+                Witaj %s %s!
+                Oto twój %s:
                 Liczba treningów: %d
                 Przebyty dystans: %.2f km
-                Czas ćwiczeń: %.2f godzin
-                """
+                Czas ćwiczeń: %.2f godzin"""
                 .formatted(
-                        report.userName(),
+                        user.firstName(),
+                        user.lastName(),
+                        report.title(),
                         report.numberOfTrainings(),
                         report.totalDistance(),
-                        report.totalDistance());
+                        report.totalHours());
 
-        EmailDto reportEmail = new EmailDto(report.userName(), "Raport z treningów", content);
+        EmailDto reportEmail = new EmailDto(user.email(), report.title(), content);
         emailSender.send(reportEmail);
     }
 
